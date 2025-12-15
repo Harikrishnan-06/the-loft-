@@ -5,8 +5,10 @@
 <title>THE LOFT HUB | Event Booking</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 body{
-  font-family:Arial;
+  font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#1d2671,#c33764);
   min-height:100vh;
   display:flex;
@@ -15,22 +17,36 @@ body{
   margin:0;
 }
 .card{
-  background:white;
+  background:#fff;
   width:520px;
   padding:30px;
   border-radius:16px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.3);
 }
 .brand{text-align:center;margin-bottom:20px;}
+.brand h1{margin:0;letter-spacing:3px;}
+.brand p{margin:5px 0;color:#777;font-size:14px;}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border-radius:8px;
+  border:1px solid #ddd;
+}
 button{
   width:100%;
-  margin-top:15px;
-  padding:12px;
+  margin-top:20px;
+  padding:14px;
   border:none;
   border-radius:30px;
-  background:#1d2671;
+  background:linear-gradient(135deg,#c33764,#1d2671);
   color:white;
+  font-size:16px;
+  font-weight:600;
   cursor:pointer;
 }
+.success{text-align:center;color:green;margin-top:15px;}
 </style>
 </head>
 
@@ -41,13 +57,24 @@ button{
     <p>Your Vision. Our Venue.</p>
   </div>
 
-  <input id="name" placeholder="Full Name"><br><br>
-  <input id="email" placeholder="Email"><br><br>
-  <input id="date" type="date"><br><br>
-  <input id="guests" type="number" placeholder="Guests"><br><br>
+  <input id="name" placeholder="Full Name">
+  <input id="email" type="email" placeholder="Email Address">
+  <input id="phone" placeholder="Phone Number">
+
+  <select id="eventType">
+    <option disabled selected>Select Event Type</option>
+    <option>Wedding</option>
+    <option>Corporate Event</option>
+    <option>Private Function</option>
+    <option>Cultural Event</option>
+  </select>
+
+  <input id="date" type="date">
+  <input id="guests" type="number" placeholder="Expected Guests">
+  <textarea id="notes" rows="3" placeholder="Additional Details"></textarea>
 
   <button onclick="submitBooking()">Request Booking</button>
-  <p id="msg"></p>
+  <div class="success" id="msg"></div>
 </div>
 
 <script type="module">
@@ -56,12 +83,12 @@ import { getFirestore, collection, addDoc, serverTimestamp }
 from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "NEW_API_KEY_HERE",
-  authDomain: "new-project-id.firebaseapp.com",
-  projectId: "new-project-id",
-  storageBucket: "new-project-id.appspot.com",
-  messagingSenderId: "NEW_SENDER_ID",
-  appId: "NEW_APP_ID"
+  apiKey: "AIzaSyBcBnlUHDuUBILRKYG982lZuuDWQIBp_ew",
+  authDomain: "the-loft-hub-7fb9f.firebaseapp.com",
+  projectId: "the-loft-hub-7fb9f",
+  storageBucket: "the-loft-hub-7fb9f.firebasestorage.app",
+  messagingSenderId: "266705224892",
+  appId: "1:266705224892:web:ab3248523bfa7aa888bcb9"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -71,12 +98,16 @@ window.submitBooking = async () => {
   await addDoc(collection(db,"bookings"),{
     name:name.value,
     email:email.value,
+    phone:phone.value,
+    eventType:eventType.value,
     date:date.value,
     guests:guests.value,
+    notes:notes.value,
     status:"Pending",
+    staffNotes:"",
     createdAt:serverTimestamp()
   });
-  msg.innerText="Booking submitted successfully!";
+  msg.innerText="✨ Booking request submitted successfully!";
 };
 </script>
 </body>
