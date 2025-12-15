@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>THE LOFT HUB | Event Booking</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:linear-gradient(135deg,#1d2671,#c33764);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+.card{
+  background:white;
+  width:520px;
+  padding:30px;
+  border-radius:16px;
+}
+.brand{text-align:center;margin-bottom:20px;}
+button{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:#1d2671;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div class="brand">
+    <h1>THE LOFT HUB</h1>
+    <p>Your Vision. Our Venue.</p>
+  </div>
+
+  <input id="name" placeholder="Full Name"><br><br>
+  <input id="email" placeholder="Email"><br><br>
+  <input id="date" type="date"><br><br>
+  <input id="guests" type="number" placeholder="Guests"><br><br>
+
+  <button onclick="submitBooking()">Request Booking</button>
+  <p id="msg"></p>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "NEW_API_KEY_HERE",
+  authDomain: "new-project-id.firebaseapp.com",
+  projectId: "new-project-id",
+  storageBucket: "new-project-id.appspot.com",
+  messagingSenderId: "NEW_SENDER_ID",
+  appId: "NEW_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.submitBooking = async () => {
+  await addDoc(collection(db,"bookings"),{
+    name:name.value,
+    email:email.value,
+    date:date.value,
+    guests:guests.value,
+    status:"Pending",
+    createdAt:serverTimestamp()
+  });
+  msg.innerText="Booking submitted successfully!";
+};
+</script>
+</body>
+</html>
